@@ -1,6 +1,7 @@
 package com.gfa.green_buy.controller;
 
 import com.gfa.green_buy.model.dto.LoginDTO;
+import com.gfa.green_buy.repository.MoneyRepository;
 import com.gfa.green_buy.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final MoneyRepository moneyRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MoneyRepository moneyRepository) {
         this.userService = userService;
+        this.moneyRepository = moneyRepository;
     }
 
     @PostMapping("/login")
@@ -25,6 +28,8 @@ public class UserController {
         Map<String, String> response = new HashMap();
         try{
             response.put("token", userService.createToken(loginDTO));
+            response.put("dolars",moneyRepository.findMoneyByUser(userService.findUserByUsername(
+                    loginDTO.getUsername())).getDollars().toString());
             return ResponseEntity.ok().body(response);
         }catch (Exception e){
             response.put("error",e.getMessage());

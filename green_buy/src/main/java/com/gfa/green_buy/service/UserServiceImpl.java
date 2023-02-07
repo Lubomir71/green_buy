@@ -1,6 +1,8 @@
 package com.gfa.green_buy.service;
 
 import com.gfa.green_buy.model.dto.LoginDTO;
+import com.gfa.green_buy.model.entity.User;
+import com.gfa.green_buy.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,9 +22,11 @@ import java.util.Set;
 public class UserServiceImpl implements UserService{
 
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(AuthenticationManager authenticationManager) {
+    public UserServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,6 +34,11 @@ public class UserServiceImpl implements UserService{
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
         return generateToken(authentication);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 
     private String generateToken(Authentication authentication){
