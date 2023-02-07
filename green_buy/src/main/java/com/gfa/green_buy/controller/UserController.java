@@ -1,5 +1,6 @@
 package com.gfa.green_buy.controller;
 
+import com.gfa.green_buy.model.dto.ErrorDTO;
 import com.gfa.green_buy.model.dto.LoginDTO;
 import com.gfa.green_buy.repository.MoneyRepository;
 import com.gfa.green_buy.service.UserService;
@@ -32,8 +33,7 @@ public class UserController {
                     loginDTO.getUsername())).getDollars().toString());
             return ResponseEntity.ok().body(response);
         }catch (Exception e){
-            response.put("error",e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
         }
     }
 

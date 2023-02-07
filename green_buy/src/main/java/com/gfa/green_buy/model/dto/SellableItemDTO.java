@@ -4,7 +4,6 @@ import com.gfa.green_buy.model.entity.SellableItem;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
 public class SellableItemDTO {
@@ -15,7 +14,7 @@ public class SellableItemDTO {
     @NotBlank(message = "Given description is not valid!")
     private String description;
     @NotBlank(message = "Given photo url is not valid!")
-    @URL(message = "Photo url is not valid url!")
+    @URL(message = "Given photo url is not valid url!")
     private String photoUrl;
     @NotNull(message = "Given starting price is not valid!")
     @Min(value = 0, message = "Given starting price must be a positive number")

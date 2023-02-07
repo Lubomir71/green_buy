@@ -2,6 +2,8 @@ package com.gfa.green_buy.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name= "green_user")
 public class User {
@@ -12,6 +14,12 @@ public class User {
     private String username;
     private String password;
     private String role;
+
+    @OneToMany(mappedBy = "user")
+    Set<Bid> bids;
+
+    @OneToMany(mappedBy = "user")
+    Set<SellableItem> sellableItems;
 
     public User() {
     }
@@ -48,5 +56,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Set<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(Set<Bid> bids) {
+        this.bids = bids;
+    }
+
+    public Set<SellableItem> getSellableItems() {
+        return sellableItems;
+    }
+
+    public void setSellableItems(Set<SellableItem> sellableItems) {
+        this.sellableItems = sellableItems;
     }
 }

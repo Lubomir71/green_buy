@@ -3,6 +3,8 @@ package com.gfa.green_buy.model.entity;
 import com.gfa.green_buy.model.dto.SellableItemDTO;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class SellableItem {
     @Id
@@ -14,9 +16,13 @@ public class SellableItem {
     private String photoUrl;
     private Integer startingPrice;
     private Integer purchasePrice;
+    private boolean sold = false;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "sellableItem")
+    Set<Bid> bids;
 
     public SellableItem() {
     }
@@ -81,5 +87,21 @@ public class SellableItem {
 
     public void setPurchasePrice(Integer purchasePrice) {
         this.purchasePrice = purchasePrice;
+    }
+
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
+    }
+
+    public Set<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(Set<Bid> bids) {
+        this.bids = bids;
     }
 }
