@@ -34,13 +34,13 @@ public class GreenBuyApplication implements CommandLineRunner {
 
         if (userRepository.count()==0) {
 
-            moneyRepository.save(new Money(500d,userRepository.save(new User("lubo", passwordEncoder
+            moneyRepository.save(new Money(500,userRepository.save(new User("lubo", passwordEncoder
                     .encode("12345"), "admin"))));
-            moneyRepository.save(new Money(125d,userRepository.save(new User("john", passwordEncoder
+            moneyRepository.save(new Money(125,userRepository.save(new User("john", passwordEncoder
                     .encode("12345"), "user"))));
-            moneyRepository.save(new Money(42.5d,userRepository.save(new User("luky", passwordEncoder
+            moneyRepository.save(new Money(42,userRepository.save(new User("luky", passwordEncoder
                     .encode("12345"), "user"))));
-            moneyRepository.save(new Money(80d,userRepository.save(new User("jimi", passwordEncoder
+            moneyRepository.save(new Money(80,userRepository.save(new User("jimi", passwordEncoder
                     .encode("12345"), "user"))));
         }
     }

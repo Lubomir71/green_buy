@@ -11,12 +11,12 @@ public class Money {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    Double dollars;
+    Integer dollars;
 
     public Money() {
     }
 
-    public Money(Double dollars,User user) {
+    public Money(Integer dollars,User user) {
         this.dollars = dollars;
         this.user = user;
     }
@@ -33,11 +33,11 @@ public class Money {
         return id;
     }
 
-    public Double getDollars() {
+    public Integer getDollars() {
         return dollars;
     }
 
-    public void setDollars(Double dollars) {
+    public void setDollars(Integer dollars) {
         this.dollars = dollars;
     }
 }
