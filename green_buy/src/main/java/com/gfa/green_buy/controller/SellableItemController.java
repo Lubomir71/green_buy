@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,11 @@ public class SellableItemController {
         });
         return errorMap;
     }
+
+//    @ExceptionHandler({Error.class})
+//    public ResponseEntity<ErrorDTO> invalidCredentialHandler(Exception ex) {
+//        return ResponseEntity.status(401).body(new ErrorDTO(ex.getMessage()));
+//    }
 
     @GetMapping("/list")
     public ResponseEntity<Object> showItems(@RequestParam (required = false,

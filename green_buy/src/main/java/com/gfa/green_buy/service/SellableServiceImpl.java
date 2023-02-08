@@ -91,12 +91,20 @@ public class SellableServiceImpl implements SellableItemService {
 
     @Override
     public SellableItemDTO showDetails(Long id) {
+
         SellableItem sellableItem=sellableItemRepository.getSellableItemById(id);
+        if (sellableItem==null) throw new IllegalArgumentException("Sellable item with given id doesn't exist!");
         List<BidDTO> bidDTOS = new ArrayList<>();
         List<Bid> bids = bidRepository.findAllBySellableItemOrderByIdDesc(sellableItem);
         for (Bid bid:bids){
             bidDTOS.add(new BidDTO(bid.getUser().getUsername(),bid.getOffer()));
         }
-        return new SellableItemDetailDTO(sellableItem,bidDTOS);
+        if (sellableItem.isSold()){
+            return new SellableItemDetailBuyerDTO(sellableItem,bidDTOS,bidRepository.
+                    findTopBySellableItemOrderByOfferDesc(sellableItem).getUser().getUsername());
+        }else{
+            return new SellableItemDetailDTO(sellableItem,bidDTOS);
+        }
+
     }
 }
