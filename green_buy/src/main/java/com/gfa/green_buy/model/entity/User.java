@@ -1,6 +1,7 @@
 package com.gfa.green_buy.model.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @Column (unique = true)
     private String username;
     private String password;
     private String role;

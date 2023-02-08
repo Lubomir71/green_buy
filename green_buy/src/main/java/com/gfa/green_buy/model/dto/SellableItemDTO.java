@@ -9,18 +9,18 @@ import org.hibernate.validator.constraints.URL;
 public class SellableItemDTO {
 
     private Long id;
-    @NotBlank(message = "Given name is not valid!")
+    @NotBlank(message = "Given name is null or empty!")
     private String name;
-    @NotBlank(message = "Given description is not valid!")
+    @NotBlank(message = "Given description is null or empty!")
     private String description;
-    @NotBlank(message = "Given photo url is not valid!")
+    @NotBlank(message = "Given photo url is null or empty!")
     @URL(message = "Given photo url is not valid url!")
     private String photoUrl;
-    @NotNull(message = "Given starting price is not valid!")
+    @NotNull(message = "Given starting price is null or empty!")
     @Min(value = 0, message = "Given starting price must be a positive number")
     private Integer startingPrice;
     @Min(value = 0, message = "Given purchase price must be a positive number")
-    @NotNull(message = "Given purchase price is not valid!")
+    @NotNull(message = "Given purchase price is null or empty!")
     private Integer purchasePrice;
 
     public SellableItemDTO() {

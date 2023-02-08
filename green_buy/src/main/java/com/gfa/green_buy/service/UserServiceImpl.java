@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String createToken(LoginDTO loginDTO) {
+        if (loginDTO.getUsername()==null) throw new IllegalArgumentException("Username is missing");
+        if (loginDTO.getPassword()==null) throw new IllegalArgumentException("Password is missing");
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
         return generateToken(authentication);
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService{
             SecretKey key = Keys.hmacShaKeyFor(System.getenv("JWT_KEY").getBytes(StandardCharsets.UTF_8));
             jwt = Jwts.builder().setIssuer("GreenBuy").setSubject("JWT Token")
                     .claim("username",authentication.getName())
+                    .claim("id",userRepository.findUserByUsername(authentication.getName()).getId())
                     .claim("authorities",getAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
                     .setExpiration(new Date((new Date()).getTime()+30000000))

@@ -1,9 +1,8 @@
 package com.gfa.green_buy.controller;
 
-import com.gfa.green_buy.model.dto.BidDTO;
+import com.gfa.green_buy.model.dto.BidRquestDTO;
 import com.gfa.green_buy.model.dto.ErrorDTO;
 import com.gfa.green_buy.model.dto.SellableItemDTO;
-import com.gfa.green_buy.model.dto.SellableItemListDTO;
 import com.gfa.green_buy.service.SellableItemService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,7 +41,7 @@ public class SellableItemController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> showItems(@RequestParam (required = false,
+    public ResponseEntity<Object> showItems(@RequestParam (required = false,
             defaultValue = "0") Integer page){
         try {
             return ResponseEntity.ok().body(sellableItemService.listSellableItem(page));
@@ -54,10 +52,19 @@ public class SellableItemController {
     }
 
     @PostMapping("/bid")
-    public ResponseEntity<Object> createBid(@RequestBody BidDTO bidDTO, HttpServletRequest request){
+    public ResponseEntity<Object> createBid(@RequestBody BidRquestDTO bidRquestDTO, HttpServletRequest request){
         try{
             String jwt = request.getHeader("Authorization").substring(7);
-            return ResponseEntity.ok().body(sellableItemService.makeBid(bidDTO,jwt));
+            return ResponseEntity.ok().body(sellableItemService.makeBid(bidRquestDTO,jwt));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/item/{id}")
+    public ResponseEntity<Object> showItem(@PathVariable Long id, HttpServletRequest request){
+        try{
+            return ResponseEntity.ok().body(sellableItemService.showDetails(id));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
         }

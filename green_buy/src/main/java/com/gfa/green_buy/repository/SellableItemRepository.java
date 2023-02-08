@@ -9,4 +9,5 @@ import java.util.List;
 public interface SellableItemRepository extends JpaRepository<SellableItem,Long> {
     List<SellableItem> findAllBySoldIsFalse (Pageable pageable);
     SellableItem getSellableItemById (Long id);
+
 }

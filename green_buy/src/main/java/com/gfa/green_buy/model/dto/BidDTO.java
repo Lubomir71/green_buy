@@ -1,24 +1,23 @@
 package com.gfa.green_buy.model.dto;
 
 public class BidDTO {
-
-    private Long id;
+    private String username;
     private Integer dollars;
 
     public BidDTO() {
     }
 
-    public BidDTO(Long id, Integer dollars) {
-        this.id = id;
+    public BidDTO(String username, Integer dollars) {
+        this.username = username;
         this.dollars = dollars;
     }
 
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getDollars() {

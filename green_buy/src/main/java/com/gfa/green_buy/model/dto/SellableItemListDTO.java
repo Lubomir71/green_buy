@@ -1,6 +1,7 @@
 package com.gfa.green_buy.model.dto;
 
 public class SellableItemListDTO {
+    private Long id;
     private String name;
     private String photoUrl;
     private Integer lastOfferedBid;
@@ -8,10 +9,19 @@ public class SellableItemListDTO {
     public SellableItemListDTO() {
     }
 
-    public SellableItemListDTO(String name, String photoUrl, Integer lastOfferedBid) {
+    public SellableItemListDTO(Long id, String name, String photoUrl, Integer lastOfferedBid) {
+        this.id=id;
         this.name = name;
         this.photoUrl = photoUrl;
         this.lastOfferedBid = lastOfferedBid;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
