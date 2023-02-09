@@ -33,12 +33,12 @@ public class SellableItemController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public Map<String, String> invalidArgumentHandler(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, String>> invalidArgumentHandler(MethodArgumentNotValidException ex) {
         Map<String, String> errorMap = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
-        return errorMap;
+        return ResponseEntity.badRequest().body(errorMap);
     }
 
 //    @ExceptionHandler({Error.class})

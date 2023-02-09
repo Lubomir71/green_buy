@@ -2,7 +2,6 @@ package com.gfa.green_buy.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gfa.green_buy.GreenBuyApplication;
-import com.gfa.green_buy.model.dto.BidDTO;
 import com.gfa.green_buy.model.dto.BidRquestDTO;
 import com.gfa.green_buy.model.dto.LoginDTO;
 import com.gfa.green_buy.model.dto.SellableItemDTO;
@@ -22,8 +21,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource("/application-test.properties")
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest(classes = GreenBuyApplication.class)
 class SellableItemControllerTest {
 
@@ -66,7 +67,6 @@ class SellableItemControllerTest {
             moneyRepository.save(new Money(50,user));
         }
         token = userService.createToken(new LoginDTO("test", "12345"));
-
     }
 
     @Test
@@ -85,20 +85,21 @@ class SellableItemControllerTest {
 
     @Test
     void invalidArgumentHandler() throws Exception {
+
         SellableItemDTO sellableItemDTO = new SellableItemDTO(null, null, null,
                 "httxfps://test", -5, -5);
+
         mvc.perform(post("/create")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sellableItemDTO)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(
-                        "{\"photoUrl\":\"Given photo url is not valid url!\"," +
-                                "\"name\":\"Given name is null or empty!\"," +
-                                "\"description\":\"Given description is null or empty!\"," +
-                                "\"startingPrice\":\"Given starting price must be a positive number\"," +
-                                "\"purchasePrice\":\"Given purchase price must be a positive number\"}"));
+                .andExpect(jsonPath("$.photoUrl").value("Given photo url is not valid url!"))
+                .andExpect(jsonPath("$.name").value("Given name is null or empty!"))
+                .andExpect(jsonPath("$.description").value("Given description is null or empty!"))
+                .andExpect(jsonPath("$.startingPrice").value("Given starting price must be a positive number!"))
+                .andExpect(jsonPath("$.purchasePrice").value("Given purchase price must be a positive number!"));
     }
 
     @Test
@@ -128,6 +129,7 @@ class SellableItemControllerTest {
         SellableItem sellableItem = sellableItemRepository.save( new SellableItem(sellableItemDTO,user));
         Long id = sellableItem.getId();
         BidRquestDTO bidRquestDTO = new BidRquestDTO(id,30);
+
         mvc.perform(post("/bid")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,7 +137,7 @@ class SellableItemControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(sellableItemDTO.getName()));
-//        assertEquals(sellableItem.isSold(),true);
+        assertTrue(sellableItem.isSold());
     }
 
     @Test
@@ -153,7 +155,7 @@ class SellableItemControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json("{\"error\":\"You do not have enough money on your account!\"}"));
-        assertEquals(sellableItem.isSold(),false);
+        assertFalse(sellableItem.isSold());
     }
 
     @Test

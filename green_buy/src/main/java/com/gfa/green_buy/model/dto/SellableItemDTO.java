@@ -17,9 +17,9 @@ public class SellableItemDTO {
     @URL(message = "Given photo url is not valid url!")
     private String photoUrl;
     @NotNull(message = "Given starting price is null or empty!")
-    @Min(value = 0, message = "Given starting price must be a positive number")
+    @Min(value = 0, message = "Given starting price must be a positive number!")
     private Integer startingPrice;
-    @Min(value = 0, message = "Given purchase price must be a positive number")
+    @Min(value = 0, message = "Given purchase price must be a positive number!")
     @NotNull(message = "Given purchase price is null or empty!")
     private Integer purchasePrice;
 
