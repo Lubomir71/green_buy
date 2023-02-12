@@ -1,5 +1,4 @@
-drop table if exists green_user;
-create table greenbuy.green_user (
+create table if not exists greenbuy.green_user (
     id          bigint not null auto_increment ,
     password    varchar(255) not null ,
     role        varchar(255) not null ,
@@ -8,8 +7,7 @@ create table greenbuy.green_user (
     unique key (username)
 ) ENGINE = InnoDB ;
 
-drop table if exists money;
-create table greenbuy.money (
+create table if not exists greenbuy.money (
     id          bigint not null auto_increment ,
     dollars     int null,
     user_id     bigint null,
@@ -17,9 +15,9 @@ create table greenbuy.money (
     key FKq4c9hf9x4dacdo5rswryu2pej (user_id)
 ) ENGINE = InnoDB ;
 
-drop table if exists bid;
-create table greenbuy.bid (
+create table if not exists greenbuy.bid (
     id                  bigint  not null    auto_increment ,
+    offer               int     null,
     sellable_item_id    bigint  null,
     user_id             bigint  null,
     primary key (id) ,
@@ -27,8 +25,8 @@ create table greenbuy.bid (
     key FKra6wtdxfved0g0wg1dvkil9ud (user_id)
 ) ENGINE = InnoDB ;
 
-drop table if exists sellable_item;
-create table greenbuy.sellable_item (
+
+create table if not exists greenbuy.sellable_item (
     id             bigint auto_increment,
     description    varchar(255) null,
     name           varchar(255) null,

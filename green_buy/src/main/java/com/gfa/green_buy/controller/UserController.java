@@ -26,24 +26,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> logUser(@RequestBody LoginDTO loginDTO) {
-        Map<String, String> response = new HashMap();
+        Map<String,String> response = new HashMap<>();
         try{
             response.put("token", userService.createToken(loginDTO));
-            response.put("dolars",moneyRepository.findMoneyByUser(userService.findUserByUsername(
+            response.put("dollars",moneyRepository.findMoneyByUser(userService.findUserByUsername(
                     loginDTO.getUsername())).getDollars().toString());
             return ResponseEntity.ok().body(response);
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
         }
-    }
-
-    @GetMapping("/welcome")
-    public String hello(){
-        try{
-            return "Welcome to application";
-        }catch (Exception e){
-            return e.getMessage();
-        }
-
     }
 }
